@@ -10,6 +10,8 @@ STATE_COUNT_FILE := $(STATE_DIR)/count
 DOCKER ?= $(shell for docker_prog in podman docker; do which $${docker_prog} 2> /dev/null && exit 0; done)
 DOCKER_IMAGE = $(shell basename $(shell pwd))
 
+DOCKERHUB_USER ?= mitizhi
+
 $(warning DOCKER: $(DOCKER))
 $(warning DOCKER_IMAGE: ${DOCKER_IMAGE})
 
@@ -43,10 +45,13 @@ $(STATE_COUNT_FILE):
 	@([ -e "$@" ] ||	printf "0" > "$@") || true
 
 help:
-	@echo "make build	- build the app"
-	@echo "make serve	- run the app"
-	@echo "make clean	- clean the executable
-	@echo "make superclean	- like 'make clean', but also remove the preserved state"
+	@echo "make build	 - build the app"
+	@echo "make serve	 - run the app"
+	@echo "make clean	 - clean the executable"
+	@echo "make superclean	 - like 'make clean', but also remove the preserved state"
+	@echo "make docker-build - build docker image"
+	@echo "make docker-run   - run the previously created docker container"
+	@echo "make docker-push  - ensure the docker image is up-to-date, tag it, and push it to Docker Hub"
 
 ifeq ($(DOCKER),)
 
@@ -54,13 +59,17 @@ ifeq ($(DOCKER),)
 
 else
 
-  .PHONY:  docker-image docker-run podman-init podman-start
+  .PHONY:  docker-image docker-run docker-push podman-init podman-start
 
-  docker-image:
-	${DOCKER) build -t ${DOCKER_IMAGE} .
+  docker-build:
+	$(DOCKER) build -t $(DOCKER_IMAGE) .
 
   docker-run:
-	$(DOCKER) run --env-file .env -p $(PORT):$(PORT) ${DOCKER_IMAGE}
+	$(DOCKER) run --env-file .env -p $(PORT):$(PORT) $(DOCKER_IMAGE)
+
+  docker-push: docker-build
+	$(DOCKER) tag $(DOCKER_IMAGE) $(DOCKERHUB_USER)/$(DOCKER_IMAGE)
+	$(DOCKER) push $(DOCKERHUB_USER)/$(DOCKER_IMAGE)
 
   podman-init:
 	podman machine init
