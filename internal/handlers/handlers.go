@@ -120,6 +120,8 @@ func MakeHandler(prefix string) http.HandlerFunc {
 			handleCount(w, r)
 		case startsWithPrefix(unprefixedPath, "sensitive/"):
 			handleSecret(w, r)
+		case startsWithPrefix(unprefixedPath, "list/"):
+			handleListUrls(w, r, prefix)
 		default:
 			handleTemplate(w, r)
 		}
@@ -195,6 +197,22 @@ func handleSecret(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Sensitive information: \"" + sensitiveInfo + "\"\n")
+}
+
+func handleListUrls(w http.ResponseWriter, r *http.Request, prefix string) {
+	host := filepath.Base(r.URL.Path)
+	addUrlListEntry(w, host, prefix, "", "                    Test connectivity")
+	addUrlListEntry(w, host, prefix, "crash", "               Abrupt crash scenario (status: 1)")
+	addUrlListEntry(w, host, prefix, "quit", "                Exit cleanly (status: 0)")
+	addUrlListEntry(w, host, prefix, "count", "               Increment counter")
+	addUrlListEntry(w, host, prefix, "sensitive/<password>", "Show sensitive information")
+	addUrlListEntry(w, host, prefix, "list/<host>", "         List URL schemes")
+	addUrlListEntry(w, host, prefix, "${file}", "             Expand template in \"" + templateDir + "/${file}\"")
+}
+
+func addUrlListEntry(w http.ResponseWriter, host string, prefix string, path string, description string) {
+	url := "http://" + host + ":" + util.GetEnvDefault("PORT", "8080") + prefix + path
+	fmt.Fprintf(w, " * " + url + " " + description + "\n")
 }
 
 func handleTemplate(w http.ResponseWriter, r *http.Request) {
