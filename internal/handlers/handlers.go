@@ -82,6 +82,14 @@ func getEnvMap() map[string]string {
 	return envMap
 }
 
+func split(s string, sep rune) []string {
+	for i := range s {
+	if s[i] == byte(sep) {
+		return []string{s[:i], s[i+1:]}
+	}
+    }
+    return []string{s}
+}
 
 /**
  * @param prefix the prefix path including preceding and trailing slashes ("/").
@@ -219,11 +227,3 @@ func handleTemplate(w http.ResponseWriter, r *http.Request) {
 	tpl.WriteTo(w)
 }
 
-func split(s string, sep rune) []string {
-	for i := range s {
-	if s[i] == byte(sep) {
-		return []string{s[:i], s[i+1:]}
-	}
-    }
-    return []string{s}
-}
