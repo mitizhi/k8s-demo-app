@@ -1,4 +1,4 @@
-0. This is a pseudo web app. Its sole raison d'être is to allow demonstrating
+0. This is a *pseudo web app*. Its sole **raison d'être** is to allow demonstrating
    some aspects of Kubernetes resources. It can be run as a pod, deployed as an
    independent service/ingress, or used as a reverse proxy target. To configure the
    behavior it can use ConfigMap values for the app configuration, employ
@@ -8,7 +8,7 @@
    request (secret password) for retrieving a page (secret information), and
    implementes a simple integer counter for resulting in state change (counter).
 
-1. The app uses environmental variables for basic configuration. The following
+1. The app uses **environmental variables** for basic **configuration**. The following
    ones affect the app behavior:
 
    | env variable | description                                                    |
@@ -31,11 +31,11 @@
    inside the container image, but it is possible replace it, too, with
    a volume.
 
-3. Request URLs summarized:
+3. **Request URLs summarized:**
 
 
-   | URL scheme                                                | Description                                                                                                                           |
-   |-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+   | URL scheme                                                 | Description                                                                                                                           |
+   |------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
    | http://${host}:${PORT}/${PREFIX}/                          | Service test URL for checking accessibility.                                                                                          |
    | http://${host}:${PORT}/${PREFIX}/hello                     | Service test URL, Says hello back (useless except for testing prefixing)..                                                            |
    | http://${host}:${PORT}/${PREFIX}/quit                      | Quits after waiting 1 seconds with status 0.                                                                                          |
@@ -43,6 +43,13 @@
    | http://${host}:${PORT}/${PREFIX}/count                     | Increase the counter value from a file on every request.                                                                              |
    | http://${host}:${PORT}/${PREFIX}/sensitive/${SECRETPASSWD} | Retrieve sensitive information (stored in ${SENSITIVEINFO}). If the  password is not correctly included then return 401 Unauthorized. |
    | http://${host}:${PORT}/${PREFIX}/${filename}               | Serves the template in ${TEMPLATEDIR}/${filename}.                                                                                    |
+   | http://${host}:${PORT}/${PREFIX}/list/<host>               | List the supported URLs, putting <host> in place. Try `/list/localhost`.                                                                  |
 
-   Caveat: host (either an IP address or corresponding host name) is not
-   configurable. The app always listen on `0.0.0.0:${PORT}`.
+4. **Limitations**
+
+   1. Host (either an IP address or corresponding host name) is not configurable.
+	  The app always listen on `0.0.0.0:${PORT}`.
+   2. While the app takes into account thread synchronization in handling the
+	  counter incrementation (low hanging fruit), no effort is seen to handle
+	  multi-container scenarios using the same state file. (For multi-node
+	  solution one could apparently use some etcd service or perhaps database.)
