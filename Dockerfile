@@ -6,7 +6,7 @@ FROM docker.io/library/golang:1.23-alpine AS builder
 WORKDIR /build
 
 # Copy go mod and sum files
-COPY go.mod go.sum .
+COPY go.mod go.sum ./
 # Copy the source code into the container
 COPY internal internal
 COPY app app
@@ -20,7 +20,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o pseudo-web-app app/main
 # Prepare the files for the final image
 RUN mkdir -pv /staging/bin /staging/data /staging/state
 COPY data  /staging/data
-COPY state /staging/state
+RUN mkdir -pv /staging/state && printf "0" > /staging/state/count
 RUN cp -aiv pseudo-web-app /staging/bin
 RUN ls -lFR /staging
 
