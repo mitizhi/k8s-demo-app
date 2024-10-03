@@ -84,11 +84,11 @@ func getEnvMap() map[string]string {
 
 func split(s string, sep rune) []string {
 	for i := range s {
-	if s[i] == byte(sep) {
-		return []string{s[:i], s[i+1:]}
+		if s[i] == byte(sep) {
+			return []string{s[:i], s[i+1:]}
+		}
 	}
-    }
-    return []string{s}
+	return []string{s}
 }
 
 /**
