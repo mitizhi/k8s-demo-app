@@ -11,13 +11,15 @@
 1. The app uses environmental variables for basic configuration. The following
    ones affect the app behavior:
 
-     PORT           Port to listen on (8080)
-     PREFIX         URL path prefix (outside of that results to 404)
-     LOGLEVEL       Log level (one of "debug", "info", "warning", "error", "fatal")
-     SECRETPASSWD   Password required to acceass a "secret information"
-     SENSITIVEINFO  Something secret, only accessible if one knows the password.
-     TEMPLATEDIR    Template directory for populated simulated content.
-     STATEDIR       S tateful data directory (only "counter" there)
+   | env variable | description                                                    |
+   | ------------ | -------------------------------------------------------------- |
+   | PORT         | Port to listen on (8080)                                       |
+   | PREFIX       | URL path prefix (outside of that results to 404)               |
+   | LOGLEVEL     | Log level (one of "debug", "info", "warning", "error", "fatal")|
+   | SECRETPASSWD | Password required to acceass a page with "secret information"  |
+   | SENSITIVEINFO| Something secret, only accessible if one knows the password    |
+   | TEMPLATEDIR  | Template directory for populated simulated content             |
+   | STATEDIR     | Stateful data directory (only "counter" there)                 |
 
 
 2. Template directory is by default served from the container image under
@@ -29,20 +31,18 @@
    inside the container image, but it is possible replace it, too, with
    a volume.
 
-   * Request URLs:
+3. Request URLs summarized:
 
-     - http://127.0.0.1:${PORT}/${PREFIX}/
-       Service test URL
-	 - http://127.0.0.1:${PORT}/${PREFIX}/hello
-       Service test URL, Says hello back
-	 - http://127.0.0.1:${PORT}/${PREFIX}/quit
-       Quits after waiting 1 seconds with status 0.
-	 - http://127.0.0.1:${PORT}/${PREFIX}/crash
-       Abruptly crashes the service (status 1).
-	 - http://127.0.0.1:${PORT}/${PREFIX}/count
-       Increase the counter value from a file on every request.
-	 - http://127.0.0.1:${PORT}/${PREFIX}/sensitive/${SECRETPASSWD}
-	   Retrieve sensitive information (stored in ${SENSITIVEINFO}). If the
-	   password is not correctly included then return 401 Unauthorized.
-	 - http://127.0.0.1:${PORT}/${PREFIX}/${filename}
-       Serves the template in ${TEMPLATEDIR}/${filename}.
+
+   | URL scheme                                                | Description                                                                                                                           |
+   |-----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+   | http://${host}:${PORT}/${PREFIX}/                          | Service test URL for checking accessibility.                                                                                          |
+   | http://${host}:${PORT}/${PREFIX}/hello                     | Service test URL, Says hello back (useless except for testing prefixing)..                                                            |
+   | http://${host}:${PORT}/${PREFIX}/quit                      | Quits after waiting 1 seconds with status 0.                                                                                          |
+   | http://${host}:${PORT}/${PREFIX}/crash                     | Abruptly crashes the service (status 1).                                                                                              |
+   | http://${host}:${PORT}/${PREFIX}/count                     | Increase the counter value from a file on every request.                                                                              |
+   | http://${host}:${PORT}/${PREFIX}/sensitive/${SECRETPASSWD} | Retrieve sensitive information (stored in ${SENSITIVEINFO}). If the  password is not correctly included then return 401 Unauthorized. |
+   | http://${host}:${PORT}/${PREFIX}/${filename}               | Serves the template in ${TEMPLATEDIR}/${filename}.                                                                                    |
+
+   Caveat: host (either an IP address or corresponding host name) is not
+   configurable. The app always listen on `0.0.0.0:${PORT}`.
