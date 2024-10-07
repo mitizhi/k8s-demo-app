@@ -47,9 +47,9 @@
 
 4. **Limitations**
 
-   1. Host (either an IP address or corresponding host name) is not configurable.
-	  The app always listen on `0.0.0.0:${PORT}`.
+   1. The listening address is not configurable; the app always listen on
+      `127.0.0.1:${PORT}`.
    2. While the app takes into account thread synchronization in handling the
-	  counter incrementation (low hanging fruit), no effort is seen to handle
-	  multi-container scenarios using the same state file. (For multi-node
-	  solution one could apparently use some etcd service or perhaps database.)
+      counter incrementation (low hanging fruit), no effort is seen to handle
+      multi-container scenarios using the same state file. (For multi-node
+      solution one could apparently use some etcd service or perhaps database.)

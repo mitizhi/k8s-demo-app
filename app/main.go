@@ -8,6 +8,8 @@ import (
 	"k8s-demo-app/internal/config"
 )
 
+const listening_host = "127.0.0.1"
+
 func main() {
 
 	log.Infof("\"" + config.GetAppName() + "\" version " + config.GetAppVersion() + " starting...")
@@ -30,9 +32,9 @@ func main() {
 	}
 
 	http.HandleFunc("/", handlers.MakeHandler(prefix))
-	log.Infof("Listening on port %s with prefix \"%s\" (Base URL: http://0.0.0.0:%s%s)",
-		port, prefix, port, prefix)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	log.Infof("Listening on %s:%s with prefix \"%s\" (Base URL: http://127.0.0.1:%s%s)",
+		listening_host, port, prefix, port, prefix)
+	if err := http.ListenAndServe(listening_host + ":" + port, nil); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
