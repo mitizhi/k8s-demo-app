@@ -48,7 +48,7 @@
 4. **Limitations**
 
    1. The listening address is not configurable; the app always listen on
-      `127.0.0.1:${PORT}`.
+      `0.0.0.0:${PORT}`.
    2. While the app takes into account thread synchronization in handling the
       counter incrementation (low hanging fruit), no effort is seen to handle
       multi-container scenarios using the same state file. (For multi-node

@@ -1,7 +1,7 @@
 package config
 
 const app_name = "Pseudo Web App"
-const version = "0.3"
+const version = "0.3.1"
 
 func GetAppName() string {
 	return app_name
