@@ -5,11 +5,11 @@ import (
 	"strings"
 	log "github.com/sirupsen/logrus"
 	"k8s-demo-app/internal/handlers"
-	"k8s-demo-app/internal/util"
+	"k8s-demo-app/internal/config"
 )
 
 func main() {
-	port := util.GetEnvDefault("PORT", "8080")
+	port := config.GetEnvDefault("PORT", "8080")
 	/*
 	  We assume prefix is of the form:
 
@@ -22,7 +22,7 @@ func main() {
 
 	  Just in case, we trim any trailing slashes...
 	*/
-	prefix := "/" + strings.TrimSuffix(util.GetEnvDefault("PREFIX", ""), "/") + "/"
+	prefix := "/" + strings.TrimSuffix(config.GetEnvDefault("PREFIX", ""), "/") + "/"
 	if prefix == "//" {
 		prefix = "/"
 	}

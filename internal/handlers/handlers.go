@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 	log "github.com/sirupsen/logrus"
-	"k8s-demo-app/internal/util"
+	"k8s-demo-app/internal/config"
 )
 
 var (
@@ -41,7 +41,7 @@ func init() {
 
 	// Set log level according to LOGLEVEL
 	logLevel := log.InfoLevel
-	logLevelStr := util.GetEnvDefault("LOGLEVEL", "info")
+	logLevelStr := config.GetEnvDefault("LOGLEVEL", "info")
 	l := logLevelStr[0]
 	switch {
 	case l == 'd':
@@ -59,10 +59,10 @@ func init() {
 	}
 	log.SetLevel(logLevel)
 
-	secretPassword = util.GetEnvDefault("SECRETPASSWD", "secret")
-	sensitiveInfo = util.GetEnvDefault("SENSITIVEINFO", "sensitive information")
-	templateDir = util.GetEnvDefault("TEMPLATEDIR", "data") + "/"
-	stateDir = util.GetEnvDefault("STATEDIR", "state") + "/"
+	secretPassword = config.GetEnvDefault("SECRETPASSWD", "secret")
+	sensitiveInfo = config.GetEnvDefault("SENSITIVEINFO", "sensitive information")
+	templateDir = config.GetEnvDefault("TEMPLATEDIR", "data") + "/"
+	stateDir = config.GetEnvDefault("STATEDIR", "state") + "/"
 	envMap = getEnvMap()
 	log.Debugf("LOGLEVEL: \"" + logLevelStr + "\"")
 	log.Debugf("SECRETPASSWD: \"" + secretPassword + "\" (do not tell anyone!)")
@@ -211,7 +211,7 @@ func handleListUrls(w http.ResponseWriter, r *http.Request, prefix string) {
 }
 
 func addUrlListEntry(w http.ResponseWriter, host string, prefix string, path string, description string) {
-	url := "http://" + host + ":" + util.GetEnvDefault("PORT", "8080") + prefix + path
+	url := "http://" + host + ":" + config.GetEnvDefault("PORT", "8080") + prefix + path
 	fmt.Fprintf(w, " * " + url + " " + description + "\n")
 }
 
