@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+
+	log.Infof("\"" + config.GetAppName() + "\" version " + config.GetAppVersion() + " starting...")
 	port := config.GetEnvDefault("PORT", "8080")
 	/*
 	  We assume prefix is of the form:

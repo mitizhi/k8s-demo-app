@@ -37,13 +37,13 @@
    | URL scheme                                                 | Description                                                                                                                           |
    |------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
    | http://${host}:${PORT}/${PREFIX}/                          | Service test URL for checking accessibility.                                                                                          |
-   | http://${host}:${PORT}/${PREFIX}/hello                     | Service test URL, Says hello back (useless except for testing prefixing)..                                                            |
+   | http://${host}:${PORT}/${PREFIX}/version                   | Prints out the hard-coded version of the app.                                                                                         |
    | http://${host}:${PORT}/${PREFIX}/quit                      | Quits after waiting 1 seconds with status 0.                                                                                          |
    | http://${host}:${PORT}/${PREFIX}/crash                     | Abruptly crashes the service (status 1).                                                                                              |
    | http://${host}:${PORT}/${PREFIX}/count                     | Increase the counter value from a file on every request.                                                                              |
    | http://${host}:${PORT}/${PREFIX}/sensitive/${SECRETPASSWD} | Retrieve sensitive information (stored in ${SENSITIVEINFO}). If the  password is not correctly included then return 401 Unauthorized. |
    | http://${host}:${PORT}/${PREFIX}/${filename}               | Serves the template in ${TEMPLATEDIR}/${filename}.                                                                                    |
-   | http://${host}:${PORT}/${PREFIX}/list/<host>               | List the supported URLs, putting <host> in place. Try `/list/localhost`.                                                                  |
+   | http://${host}:${PORT}/${PREFIX}/list/<host>               | List the supported URLs, putting <host> in place. Try `/list/localhost`.                                                              |
 
 4. **Limitations**
 

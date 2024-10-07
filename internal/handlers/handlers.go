@@ -110,8 +110,8 @@ func MakeHandler(prefix string) http.HandlerFunc {
 		switch {
 		case unprefixedPath == "" || unprefixedPath =="/":
 			fmt.Fprint(w, "It works!\n")
-		case unprefixedPath == "hello":
-			fmt.Fprintf(w, "Hello, there!\n")
+		case unprefixedPath == "version":
+			fmt.Fprintf(w, "App \"" + config.GetAppName() + "\" version: " + config.GetAppVersion() + "\n")
 		case unprefixedPath == "crash":
 			handleCrash()
 		case unprefixedPath == "quit":
