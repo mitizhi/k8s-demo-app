@@ -65,7 +65,7 @@ else
 	$(DOCKER) build -t $(DOCKER_IMAGE) .
 
   docker-run:
-	$(DOCKER) run --env-file .env -p $(PORT):$(PORT) $(DOCKER_IMAGE)
+	$(DOCKER) run $(if $(wildcard .env),--env-file .env) -p $(PORT):$(PORT) $(DOCKER_IMAGE)
 
   docker-push: docker-build
 	$(DOCKER) tag $(DOCKER_IMAGE) $(DOCKERHUB_USER)/$(DOCKER_IMAGE)
